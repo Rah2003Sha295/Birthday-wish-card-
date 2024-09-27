@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cursive', sans-serif;
+        }
+
+        body {
+            background-color:black; /* Changed to white */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            color: black; /* Changed text color to black for visibility */
+            display: none; /* Initially hidden */
+        }
+
+        h1 {
+            font-size: 4em;
+            color: #ff79c6;
+            margin-bottom: 20px;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        p {
+            font-size: 1.8em;
+            color: #f1fa8c;
+            margin-top: 10px;
+            animation: fadeIn 3s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        .balloons {
+            position: absolute;
+            top: 10%;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .balloon {
+            width: 50px;
+            height: 70px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #f39c12, #e74c3c);
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .balloon::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 100px;
+            background-color: white;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .balloon:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .balloon:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .balloon:nth-child(3) {
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-300px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px #ff79c6, 0 0 20px #ff79c6;
+            }
+            100% {
+                text-shadow: 0 0 20px #ff79c6, 0 0 40px #ff79c6;
+            }
+        }
+
+        @keyframes fadeIn {
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f1c40f;
+            animation: fall 5s linear infinite;
+        }
+
+        .confetti:nth-child(2n) {
+            background-color: #e74c3c;
+        }
+
+        .confetti:nth-child(3n) {
+            background-color: #3498db;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Rose Animation */
+        .rose {
+            position: absolute;
+            width: 30px;
+            height: 50px;
+            background-image: url('rose.png'); /* Replace with the image path of a rose */
+            background-size: cover;
+            animation: fallRoses 7s linear infinite;
+        }
+
+        @keyframes fallRoses {
+            0% {
+                transform: translateY(-50px);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Name input form */
+        .name-input {
+            text-align: center;
+            color: black;
+        }
+
+        .name-input input {
+            padding: 10px;
+            font-size: 1.2em;
+            margin-top: 20px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .name-input button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            margin-top: 10px;
+            background-color: #ff79c6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Name Input Form -->
+    <div class="name-input">
+        <h1>Enter the Birthday Person's Name</h1>
+        <input type="text" id="nameInput" placeholder="Enter Name" />
+        <br>
+        <button onclick="startAnimation()">Submit</button>
+    </div>
+
+    <!-- Birthday Animation Section -->
+    <div class="container">
+        <div class="balloons">
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+        </div>
+        <h1 id="birthdayMessage">Happy Birthday!</h1>
+        <p id="message"></p>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="birthdayMusic" src="happy-birthday-155461.mp3"></audio> 
+
+    <script>
+        function startAnimation() {
+            const name = document.getElementById("nameInput").value;
+
+            if (name) {
+                document.querySelector(".name-input").style.display = "none"; 
+                document.querySelector(".container").style.display = "block"; 
+                
+                document.getElementById("birthdayMessage").textContent = `Happy Birthday, ${name}! 🎉`;
+                
+                const messageText = `${name}, you're my everything! Wishing you a day full of love, joy, and laughter. 💖 i hoper your all wishes and dreams come True what you god gives you long life ans success enjoy your day`;
+                let index = 0;
+                const messageElement = document.getElementById('message');
+
+                function typeMessage() {
+                    if (index < messageText.length) {
+                        messageElement.innerHTML += messageText.charAt(index);
+                        index++;
+                        setTimeout(typeMessage, 20); 
+                    }
+                }
+
+                typeMessage();
+                
+                document.getElementById('birthdayMusic').play();
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.animationDuration = Math.random() * 3 + 2 + 's'; // Vary fall speed
+                    document.body.appendChild(confetti);
+                }
+                for (let i = 0; i < 20; i++) {
+                    const rose = document.createElement('div');
+                    rose.classList.add('rose');
+                    rose.style.left = Math.random() * window.innerWidth + 'px';
+                    rose.style.animationDuration = Math.random() * 5 + 3 + 's'; // Vary fall speed
+                    document.body.appendChild(rose);
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
